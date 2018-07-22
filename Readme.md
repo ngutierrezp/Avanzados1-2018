@@ -59,12 +59,36 @@ Por esto se creo una estructura de lista enlazada para solucionar esto:
 
 
 
+Tomando en conocimiento esto, un puzzle puede generar 4 puzzles nuevos (como máximo) con 1 movimiento. De esta forma utilizando Backtracking se ira bajando por los niveles (movimientos) hasta encontrar un resultado. Al encontrar este resultado se volverá al estado anterior teniendo la restricción de que la cantidad de movimientos actual del puzzle sea menor a la del resultado encontrado (todo esto para elegir una nuevo resultado)
 
-### Installation
+En conocimiento de lo anterior la idea final del desarrollo del algoritmo es tomar el primer puzzle leído del archivo de texto, formar una lista de visitados para cada proximo estado.  Del primer puzzle leído se obtienen los puzzles a los cuales X puede ser movida, si estos puzzles no han sido visitados se hace la recursión la cual tiene dos casos base: 
 
+> Que la cantidad de movimientos actual sea menor a la de un resultado encontrado
+> Que el puzzle actual sea el puzzle resultado.
+
+De esta forma se crea un ciclo el cual termina cuando no hayan estados pendientes de recursión. 
+
+
+<p align="center"><img src="https://i.imgur.com/93rqxsW.jpg"></p>
+
+
+
+
+## Ejecución
+
+Existen dos formas de compilar y ejecutar el codigo.
+
+La primera es la comun y corriente.
 ```sh
 $ gcc Lab2.c -o ejecutable
 $ ./ejecutable
 ```
+
+La segunda es para entrar al modo de `DEBUG` del programa.
+```sh
+$ gcc Lab2.c -DDEBUG -o ejecutable
+$ ./ejecutable
+```
+
 
 
