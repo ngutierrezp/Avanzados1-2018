@@ -34,7 +34,7 @@ Los puedes se pueden modificar dependiendo de los espacios adyacentes de 'X'. Di
 | Izquierda | se podra mover si no esta en las posiciones [2,5,8] | `if(i % 3 != 0)` |
 | Derecha | se podra mover si no esta en las posiciones [0,3,6] | `if((i+1) % 3 != 0)` |
 
-
+> con i = posición actual del caracter 'X' en el puzzle. 
 
 ### Estructuras del programa
 
