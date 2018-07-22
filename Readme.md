@@ -19,9 +19,9 @@ Para representar el un puzzle existen diferentes formas segun la imaginacion y m
 
 En este sentido si se tiene el siguiente puzzle:
 
-      2 1 3
-      4 8 6
-      7 5 X
+                                                      2 1 3
+                                                      4 8 6
+                                                      7 5 X
       
 Su representación sera: `char puzzle_result[9] = {'2','1','3','4','8','6','7','5','X'};`
 
