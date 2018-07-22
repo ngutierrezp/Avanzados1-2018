@@ -1,177 +1,70 @@
-<p align="center"> # BackTracking para Puzzle-8 en C. </p>
-
-El codigo 
-
-  - Type some Markdown on the left
-  - See HTML in the right
-  - Magic
-
-### New Features!
-
-  - Import a HTML file and watch it magically convert to Markdown
-  - Drag and drop images (requires your Dropbox account be linked)
+#                               BackTracking para Puzzle-8 en C.
 
 
-You can also:
-  - Import and save files from GitHub, Dropbox, Google Drive and One Drive
-  - Drag and drop markdown and HTML files into Dillinger
-  - Export documents as Markdown, HTML and PDF
+## El problema del puzzle-8 
+El puzzle 8 es un puzzle de 9 partes a la que le falta 1 (de ahi el nombre). Como le falta una pieza, las demas pueden moverse hasta resolver el puzzle.
 
-Markdown is a lightweight markup language based on the formatting conventions that people naturally use in email.  As [John Gruber] writes on the [Markdown site][df1]
+<p align="center"><img src="https://i.stack.imgur.com/YQd0a.png"></p>
 
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
+Para resolver el puzzle todas las piezas deben estar en orden desde el 1 al 8 (dado que el 9 no existe).
+El problema en este sentido es encontrar la cantidad minima de movimientos en el puzzle para poder solucionarlo.
+(cabe destacar que no se entrega el orden de como se debe solucionar, solo la cantidad minima de movimientos)
 
-This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
+## Solución (BackTracking)
 
-### Tech
+Para este problema se ha implementado una solición en C con el algoritmo de Backtrcking. 
 
-Dillinger uses a number of open source projects to work properly:
+### Representación del puzzle
+Para representar el un puzzle existen diferentes formas segun la imaginacion y manejo del programador, en este sentido he decido representarlo como un arreglo de caracteres `char* puzzle` siempre con un largo para 9 elementos.
 
-* [AngularJS] - HTML enhanced for web apps!
-* [Ace Editor] - awesome web-based text editor
-* [markdown-it] - Markdown parser done right. Fast and easy to extend.
-* [Twitter Bootstrap] - great UI boilerplate for modern web apps
-* [node.js] - evented I/O for the backend
-* [Express] - fast node.js network app framework [@tjholowaychuk]
-* [Gulp] - the streaming build system
-* [Breakdance](http://breakdance.io) - HTML to Markdown converter
-* [jQuery] - duh
+En este sentido si se tiene el siguiente puzzle:
 
-And of course Dillinger itself is open source with a [public repository][dill]
- on GitHub.
+      2 1 3
+      4 8 6
+      7 5 X
+      
+Su representación sera: `char puzzle_result[9] = {'2','1','3','4','8','6','7','5','X'};`
+
+Los puedes se pueden modificar dependiendo de los espacios adyacentes de 'X'. Dicho de otro modo, la X puede moverse de a 4 sitios distintdos (dependiendo de su pocision):
+
+| movimiento de X | Logica | Codigo | 
+| ------ | ------ | ------ |
+| Arriba | se podra mover si no esta en las posiciones [0,1,2] | `if(i-3 >= 0)` |
+| Abajo | se podra mover si no esta en las posiciones [6,7,8] | `if(i+3 <= 8)` |
+| Izquierda | se podra mover si no esta en las posiciones [2,5,8] | `if(i % 3 != 0)` |
+| Derecha | se podra mover si no esta en las posiciones [0,3,6] | `if((i+1) % 3 != 0)` |
+
+
+
+### Estructuras del programa
+
+* Arbol 
+
+Para poder hacer backtracking en este problema hay que entender que cada movimiento en un puzzle equivale a crear un nuevo puzzle. Ademas de esto, cada puzzle tiene una cantidad de movimientos necesarios para llegar a ese puzzle.
+
+Entonces, si se toma un puzzle inicial, es posible crear un maximo de 4 puzzles hijos a partir de este. (esto dependiendo del movimiento de las X.
+
+Tomando esta logica, se ha creado una estructura que funcionará como arbol de puzzles: 
+
+<p align="center"><img src="https://i.imgur.com/VzPkcnx.jpg"></p>
+
+* Lista
+
+Para avanzar en el arbol es necesario saber por donde hemos pasado, entonces es necesario disponer de una lista con los puzzles ya visitados.
+
+Por esto se creo una estructura de lista enlazada para solucionar esto: 
+
+<p align="center"><img src="https://i.imgur.com/QY7HBnN.jpg"></p>
+
+
+
+
 
 ### Installation
 
-Dillinger requires [Node.js](https://nodejs.org/) v4+ to run.
-
-Install the dependencies and devDependencies and start the server.
-
 ```sh
-$ cd dillinger
-$ npm install -d
-$ node app
+$ gcc Lab2.c -o ejecutable
+$ ./ejecutable
 ```
 
-For production environments...
 
-```sh
-$ npm install --production
-$ NODE_ENV=production node app
-```
-
-### Plugins
-
-Dillinger is currently extended with the following plugins. Instructions on how to use them in your own application are linked below.
-
-| Plugin | README |
-| ------ | ------ |
-| Dropbox | [plugins/dropbox/README.md][PlDb] |
-| Github | [plugins/github/README.md][PlGh] |
-| Google Drive | [plugins/googledrive/README.md][PlGd] |
-| OneDrive | [plugins/onedrive/README.md][PlOd] |
-| Medium | [plugins/medium/README.md][PlMe] |
-| Google Analytics | [plugins/googleanalytics/README.md][PlGa] |
-
-
-### Development
-
-Want to contribute? Great!
-
-Dillinger uses Gulp + Webpack for fast developing.
-Make a change in your file and instantanously see your updates!
-
-Open your favorite Terminal and run these commands.
-
-First Tab:
-```sh
-$ node app
-```
-
-Second Tab:
-```sh
-$ gulp watch
-```
-
-(optional) Third:
-```sh
-$ karma test
-```
-#### Building for source
-For production release:
-```sh
-$ gulp build --prod
-```
-Generating pre-built zip archives for distribution:
-```sh
-$ gulp build dist --prod
-```
-### Docker
-Dillinger is very easy to install and deploy in a Docker container.
-
-By default, the Docker will expose port 8080, so change this within the Dockerfile if necessary. When ready, simply use the Dockerfile to build the image.
-
-```sh
-cd dillinger
-docker build -t joemccann/dillinger:${package.json.version}
-```
-This will create the dillinger image and pull in the necessary dependencies. Be sure to swap out `${package.json.version}` with the actual version of Dillinger.
-
-Once done, run the Docker image and map the port to whatever you wish on your host. In this example, we simply map port 8000 of the host to port 8080 of the Docker (or whatever port was exposed in the Dockerfile):
-
-```sh
-docker run -d -p 8000:8080 --restart="always" <youruser>/dillinger:${package.json.version}
-```
-
-Verify the deployment by navigating to your server address in your preferred browser.
-
-```sh
-127.0.0.1:8000
-```
-
-#### Kubernetes + Google Cloud
-
-See [KUBERNETES.md](https://github.com/joemccann/dillinger/blob/master/KUBERNETES.md)
-
-
-### Todos
-
- - Write MORE Tests
- - Add Night Mode
-
-License
-----
-
-MIT
-
-
-**Free Software, Hell Yeah!**
-
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-
-
-   [dill]: <https://github.com/joemccann/dillinger>
-   [git-repo-url]: <https://github.com/joemccann/dillinger.git>
-   [john gruber]: <http://daringfireball.net>
-   [df1]: <http://daringfireball.net/projects/markdown/>
-   [markdown-it]: <https://github.com/markdown-it/markdown-it>
-   [Ace Editor]: <http://ace.ajax.org>
-   [node.js]: <http://nodejs.org>
-   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
-   [jQuery]: <http://jquery.com>
-   [@tjholowaychuk]: <http://twitter.com/tjholowaychuk>
-   [express]: <http://expressjs.com>
-   [AngularJS]: <http://angularjs.org>
-   [Gulp]: <http://gulpjs.com>
-
-   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
-   [PlGh]: <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
-   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
-   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
-   [PlMe]: <https://github.com/joemccann/dillinger/tree/master/plugins/medium/README.md>
-   [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>
