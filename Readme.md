@@ -58,7 +58,7 @@ Por esto se creo una estructura de lista enlazada para solucionar esto:
 
 
 
-
+-------------------------------------------------------------------------------------------------------------------------
 Tomando en conocimiento esto, un puzzle puede generar 4 puzzles nuevos (como máximo) con 1 movimiento. De esta forma utilizando Backtracking se ira bajando por los niveles (movimientos) hasta encontrar un resultado. Al encontrar este resultado se volverá al estado anterior teniendo la restricción de que la cantidad de movimientos actual del puzzle sea menor a la del resultado encontrado (todo esto para elegir una nuevo resultado)
 
 En conocimiento de lo anterior la idea final del desarrollo del algoritmo es tomar el primer puzzle leído del archivo de texto, formar una lista de visitados para cada proximo estado.  Del primer puzzle leído se obtienen los puzzles a los cuales X puede ser movida, si estos puzzles no han sido visitados se hace la recursión la cual tiene dos casos base: 
