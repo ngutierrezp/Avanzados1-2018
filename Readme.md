@@ -80,13 +80,13 @@ Existen dos formas de compilar y ejecutar el codigo.
 
 La primera es la comun y corriente.
 ```sh
-$ gcc Lab2.c -o ejecutable
+$ gcc backtracking.c -o ejecutable
 $ ./ejecutable
 ```
 
 La segunda es para entrar al modo de `DEBUG` del programa.
 ```sh
-$ gcc Lab2.c -DDEBUG -o ejecutable
+$ gcc backtracking.c -DDEBUG -o ejecutable
 $ ./ejecutable
 ```
 
