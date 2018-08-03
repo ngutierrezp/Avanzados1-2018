@@ -14,6 +14,7 @@
 
 #define TRUE 1
 #define FALSE 0
+//#define DEBUG  //activar o desactivar modo DEBUG
 
 
 
@@ -90,7 +91,7 @@ move selectMinMove(listMoves Lmoves){
 	move result;
 
 	int i;
-	double min = 99999999999;
+	double min = 999999;
 	for (i = 0; i < Lmoves.count; i++)
 	{
 		if (Lmoves.moves[i].cost < min && Lmoves.moves[i].cost != 0)
@@ -121,7 +122,7 @@ int findNerbyQuarry(listMines Lmines,int Mine){
 		int i;
 		mine* List = Lmines.mines;
 
-		double min = 99999999999;
+		double min = 999999;
 		for (i = 0; i < Lmines.count; i++)
 		{
 			if (List[i].quarry != Mine && List[i].gold)
@@ -244,11 +245,11 @@ void writeFile(move* lmoves, int minesCount){
     {
     	if (lmoves[i].cost != 0)
     	{
-    		fprintf(fichero,"%i -> %i\n",lmoves[i].initial, lmoves[i].final);
+    		fprintf(fichero,"%d -> %d\n",lmoves[i].initial, lmoves[i].final);
     		totalCost=totalCost+lmoves[i].cost;
     	}
     }
-    fprintf(fichero,"Costo: %i \n",totalCost );
+    fprintf(fichero,"Costo: %d \n",totalCost );
     fclose(fichero);
   }
   else
@@ -265,9 +266,14 @@ void writeFile(move* lmoves, int minesCount){
 move* goloso(listMines lMines){
 
 	int cost=0;
-
+	int i;
 	move* trazaList = (move*)malloc(sizeof(move)*lMines.count);
-	int i=0;
+	for(i=0 ; i < lMines.count ; i++){
+		trazaList[i].cost=0;
+		trazaList[i].initial=0;
+		trazaList[i].final=0;
+	}
+	i=0;
 	while(countMinesWithGold(lMines) > lMines.trucks){
 		listMoves LM = createListOptimalMines(lMines);
 		#ifdef DEBUG
@@ -310,6 +316,7 @@ int main(int argc, char const *argv[])
 
 	free(current.mines);
 	free(traza);
+	printf("Programa terminado. Revise archivo de salida 'Salida.out'");
 	
 
 
